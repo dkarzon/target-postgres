@@ -21,7 +21,11 @@ def main(config, input_stream=None):
             sslcert=config.get('postgres_sslcert'),
             sslkey=config.get('postgres_sslkey'),
             sslrootcert=config.get('postgres_sslrootcert'),
-            sslcrl=config.get('postgres_sslcrl')
+            sslcrl=config.get('postgres_sslcrl'),
+            keepalives=1,
+            keepalives_idle=130,
+            keepalives_interval=10,
+            keepalives_count=10
     ) as connection:
         postgres_target = PostgresTarget(
             connection,

@@ -184,7 +184,15 @@ def _async_send_usage_stats():
 
 
 def _run_sql_hook(hook_name, config, target):
+    LOGGER.info('Executing hook ' + hook_name)
     if hook_name in config:
         with target.conn.cursor() as cur:
             cur.execute(config[hook_name])
             LOGGER.debug('{} SQL executed'.format(hook_name))
+
+    hook_file = hook_name + '_file'
+    if hook_file in config:
+        with open(config[hook_file]) as f:
+            with target.conn.cursor() as cur:
+                cur.execute(f.read())
+                LOGGER.debug('{} SQL file executed'.format(hook_file))
